@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi Minkei!</title>
+
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+
+<body>
+    <div class="bg-image" id="bgImage"></div>
+
+
+    <button class="settings-btn" id="settingsBtn">
+        <i class="fa-solid fa-gear"></i>
+    </button>
+
+
+    <!-- <button class="refresh-btn" id="refreshBtn">
+        <i class="fa-solid fa-rotate-right"></i>
+    </button> -->
+
+
+
+    <aside class="sidebar">
+        <!-- Greeting, Clock, Date -->
+        <div class="widget">
+            <p class="hero" id="greeting">Good morning, <span>Minkei!</span></p>
+            <p class="date" id="date">Monday, January 1, 2025</p>
+            <h1 class="time" id="time">00:00</h1>
+        </div>
+
+
+
+
+        <!-- Widget 1: Ask Claude -->
+        <div class="widget">
+            <div class="widget-header">
+                <img src="https://cdn.simpleicons.org/claude/D97757" class="widget-icon-img">
+                <div class="widget-title">Claude</div>
+            </div>
+            <div class="widget-body">
+                <textarea class="widget-input" placeholder="Ask Claude anything..."></textarea>
+                <button class="widget-submit-btn" id="claudeSubmitBtn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span class="send-text">Ask Claude</span>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Widget 2: ChatGPT -->
+        <div class="widget">
+            <div class="widget-header">
+                <img src="https://www.svgrepo.com/show/306500/openai.svg" class="widget-icon-img">
+                <div class="widget-title">ChatGPT</div>
+            </div>
+            <div class="widget-body">
+                <textarea class="widget-input" placeholder="Ask ChatGPT anything..."></textarea>
+                <button class="widget-submit-btn" id="chatgptSubmitBtn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span class="send-text">Ask ChatGPT</span>
+                </button>
+            </div>
+        </div>
+
+
+    </aside>
+
+    <main class="main-content">
+        <!-- Main content can go here -->
+    </main>
+
+
+
+
+    <!-- Settings panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3>Settings</h3>
+        </div>
+
+        <div class="settings-body">
+            <div class="setting-item">
+                <div class="setting-item-header">
+                    <label>Background Blur</label>
+                    <span id="blurValue">40px</span>
+                </div>
+                <input type="range" id="blurSlider" min="0" max="40" value="40" step="1">
+            </div>
+
+
+            <div class="setting-item">
+                <div class="setting-item-header">
+                    <label>Spotlight Size</label>
+                    <span id="spotlightValue">150px</span>
+                </div>
+                <input type="range" id="spotlightSlider" min="50" max="300" value="150" step="10">
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
