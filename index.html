@@ -80,8 +80,79 @@
     </aside>
 
     <main class="main-content">
-        <!-- Main content can go here -->
+        <div class="app-grid">
+            <a class="app-item" href="https://mail.google.com" target="_blank" draggable="true" data-id="gmail">
+                <img src="https://cdn.simpleicons.org/gmail/EA4335">
+                <span>Gmail</span>
+            </a>
+
+            <a class="app-item" href="https://drive.google.com" target="_blank" draggable="true" data-id="drive">
+                <img src="https://cdn.simpleicons.org/googledrive/4285F4">
+                <span>Drive</span>
+            </a>
+
+            <a class="app-item" href="https://sheets.google.com" target="_blank" draggable="true" data-id="sheets">
+                <img src="https://cdn.simpleicons.org/googlesheets/34A853">
+                <span>Sheets</span>
+            </a>
+
+            <a class="app-item" href="https://translate.google.com" target="_blank" draggable="true"
+                data-id="translate">
+                <img src="https://cdn.simpleicons.org/googletranslate/4285F4">
+                <span>Translate</span>
+            </a>
+
+            <!-- Social -->
+            <a class="app-item" href="https://facebook.com" target="_blank" draggable="true" data-id="facebook">
+                <img src="https://cdn.simpleicons.org/facebook/1877F2">
+                <span>Facebook</span>
+            </a>
+
+            <a class="app-item" href="https://youtube.com" target="_blank" draggable="true" data-id="youtube">
+                <img src="https://cdn.simpleicons.org/youtube/FF0000">
+                <span>YouTube</span>
+            </a>
+
+            <a class="app-item" href="https://tiktok.com" target="_blank" draggable="true" data-id="tiktok">
+                <img src="https://cdn.simpleicons.org/tiktok/white">
+                <span>TikTok</span>
+            </a>
+
+            <a class="app-item" href="https://linkedin.com" target="_blank" draggable="true" data-id="linkedin">
+                <img src="https://www.svgrepo.com/show/448234/linkedin.svg">
+                <span>LinkedIn</span>
+            </a>
+
+            <!-- AI / Dev -->
+            <a class="app-item" href="https://chat.openai.com" target="_blank" draggable="true" data-id="chatgpt">
+                <img src="https://www.svgrepo.com/show/306500/openai.svg">
+                <span>ChatGPT</span>
+            </a>
+
+            <a class="app-item" href="https://claude.ai" target="_blank" draggable="true" data-id="claude">
+                <img src="https://cdn.simpleicons.org/anthropic/D97757">
+                <span>Claude</span>
+            </a>
+
+            <a class="app-item" href="https://github.com" target="_blank" draggable="true" data-id="github">
+                <img src="https://cdn.simpleicons.org/github/white">
+                <span>GitHub</span>
+            </a>
+
+            <div class="app-item add-app" id="addApp">
+                <i class="fa-solid fa-plus"></i>
+                <span>Add</span>
+            </div>
+
+        </div>
     </main>
+
+    <div class="context-menu" id="appContextMenu">
+        <button id="editApp">✏️ Edit</button>
+        <button id="removeApp">🗑 Remove</button>
+    </div>
+
+
 
 
 
@@ -100,7 +171,6 @@
                 </div>
                 <input type="range" id="blurSlider" min="0" max="40" value="40" step="1">
             </div>
-
 
             <div class="setting-item">
                 <div class="setting-item-header">

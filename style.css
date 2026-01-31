@@ -67,27 +67,25 @@ body {
     top: 80px;
     right: 24px;
     width: 320px;
-    
+
     /* Liquid glass */
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.22) 0%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.14) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.22) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.14) 100%);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
-    
+
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     padding: 20px;
-    
-    box-shadow: 
+
+    box-shadow:
         0 16px 48px rgba(0, 0, 0, 0.25),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    
+
     z-index: 99;
-    
+
     /* Hidden by default */
     display: none;
 }
@@ -122,14 +120,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px; 
+    margin-bottom: 8px;
 }
 
 .setting-item label {
-    display: block;
     font-size: 0.9rem;
-    margin-bottom: 8px;
     color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+.setting-item span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .setting-item input[type="range"] {
@@ -139,13 +141,6 @@ body {
     background: rgba(255, 255, 255, 0.2);
     outline: none;
     cursor: pointer;
-}
-
-.setting-item span {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
 }
 
 .sidebar {
@@ -334,11 +329,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-        circle var(--spotlight-size, 150px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.15) 0%,
-        transparent 100%
-    );
+    background: radial-gradient(circle var(--spotlight-size, 150px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -357,11 +350,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-        circle var(--spotlight-size, 150px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.15) 0%,
-        transparent 100%
-    );
+    background: radial-gradient(circle var(--spotlight-size, 150px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -370,4 +361,136 @@ body {
 
 .settings-panel:hover::before {
     opacity: 1;
+}
+
+
+/* Main content styles */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 20px;
+    max-width: 720px;
+}
+
+.app-item {
+    aspect-ratio: 1 / 1;
+    border-radius: 22px;
+
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.22),
+            rgba(255, 255, 255, 0.08));
+
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.85);
+
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.app-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle var(--spotlight-size, 150px) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.app-item:hover::before {
+    opacity: 1;
+}
+
+
+.app-item img {
+    width: 36px;
+    height: 36px;
+}
+
+.app-item span {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.app-item:hover {
+    transform: translateY(-6px) scale(1.04);
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.app-item.dragging {
+    opacity: 0.35;
+    transform: scale(0.4);
+    filter: blur(1px);
+}
+
+.app-item.add-app {
+    cursor: pointer;
+    border: 2px dashed rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.08);
+}
+
+.app-item.add-app i {
+    font-size: 28px;
+    opacity: 0.8;
+}
+
+.app-item.add-app:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px) scale(1.02);
+}
+
+
+/* Context menu */
+.context-menu {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+
+    z-index: 999;
+}
+
+.context-menu button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.context-menu button:hover {
+    background: rgba(255,255,255,0.15);
 }
