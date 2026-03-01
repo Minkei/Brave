@@ -25,7 +25,11 @@ const CONFIG = {
     STORAGE_KEYS: {
         APP_ORDER: 'appOrder',
         BLUR: 'bgBlur',
-        SPOTLIGHT: 'spotlightSize'
+        SPOTLIGHT: 'spotlightSize',
+        WIDGET_WIDTH: 'widgetWidth',
+        WIDGET_HEIGHT: 'widgetHeight',
+        ICON_SIZE: 'iconSize',
+        LOCATION: 'userLocation'
     }
 };
 
@@ -161,7 +165,13 @@ function initSettings() {
     const blurValue = document.getElementById('blurValue');
     const spotlightSlider = document.getElementById('spotlightSlider');
     const spotlightValue = document.getElementById('spotlightValue');
-    
+    const widgetWidthSlider = document.getElementById('widgetWidthSlider');
+    const widgetWidthValue = document.getElementById('widgetWidthValue');
+    const widgetHeightSlider = document.getElementById('widgetHeightSlider');
+    const widgetHeightValue = document.getElementById('widgetHeightValue');
+    const iconSizeSlider = document.getElementById('iconSizeSlider');
+    const iconSizeValue = document.getElementById('iconSizeValue');
+
     // Restore saved blur
     const savedBlur = localStorage.getItem(CONFIG.STORAGE_KEYS.BLUR);
     if (savedBlur !== null) {
@@ -199,6 +209,66 @@ function initSettings() {
         applySpotlightSize(size);
         localStorage.setItem(CONFIG.STORAGE_KEYS.SPOTLIGHT, size);
     });
+
+    // Restore saved widget height
+    const savedWidgetHeight = localStorage.getItem(CONFIG.STORAGE_KEYS.WIDGET_HEIGHT);
+    if (savedWidgetHeight !== null) {
+        applyWidgetHeight(savedWidgetHeight);
+        widgetHeightSlider.value = savedWidgetHeight;
+        widgetHeightValue.textContent = savedWidgetHeight === '0' ? 'Auto' : `${savedWidgetHeight}px`;
+    }
+
+    // Restore saved widget width
+    const savedWidgetWidth = localStorage.getItem(CONFIG.STORAGE_KEYS.WIDGET_WIDTH);
+    if (savedWidgetWidth !== null) {
+        applyWidgetWidth(savedWidgetWidth);
+        widgetWidthSlider.value = savedWidgetWidth;
+        widgetWidthValue.textContent = `${savedWidgetWidth}px`;
+    }
+
+    // Restore saved icon size
+    const savedIconSize = localStorage.getItem(CONFIG.STORAGE_KEYS.ICON_SIZE);
+    if (savedIconSize !== null) {
+        applyIconSize(savedIconSize);
+        iconSizeSlider.value = savedIconSize;
+        iconSizeValue.textContent = `${savedIconSize}px`;
+    }
+
+    // Widget height adjustment
+    widgetHeightSlider.addEventListener('input', (e) => {
+        const height = e.target.value;
+        widgetHeightValue.textContent = height === '0' ? 'Auto' : `${height}px`;
+        applyWidgetHeight(height);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.WIDGET_HEIGHT, height);
+    });
+
+    // Widget width adjustment
+    widgetWidthSlider.addEventListener('input', (e) => {
+        const width = e.target.value;
+        widgetWidthValue.textContent = `${width}px`;
+        applyWidgetWidth(width);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.WIDGET_WIDTH, width);
+    });
+
+    // Icon size adjustment
+    iconSizeSlider.addEventListener('input', (e) => {
+        const size = e.target.value;
+        iconSizeValue.textContent = `${size}px`;
+        applyIconSize(size);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.ICON_SIZE, size);
+    });
+}
+
+function applyWidgetHeight(height) {
+    document.documentElement.style.setProperty('--widget-height', height === '0' ? 'auto' : `${height}px`);
+}
+
+function applyWidgetWidth(width) {
+    document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
+}
+
+function applyIconSize(size) {
+    document.documentElement.style.setProperty('--icon-size', `${size}px`);
 }
 
 function applyBlur(blur) {
@@ -418,52 +488,32 @@ function initAIWidgets() {
     claudeBtn.addEventListener('click', async () => {
         const prompt = claudeTextarea.value.trim();
         if (!prompt) return;
-        
-        try {
-            // Copy to clipboard
-            await navigator.clipboard.writeText(prompt);
-            
-            // Open Claude.ai in new tab
-            window.open('https://claude.ai/new', '_blank');
-            
-            // Show success notification
-            showNotification('✓ Copied to clipboard! Opening Claude...', 'success');
-            
-            // Clear textarea
-            claudeTextarea.value = '';
-            claudeBtn.disabled = true;
-            
-        } catch (error) {
-            console.error('Failed to copy:', error);
-            showNotification('⚠ Failed to copy. Opening Claude anyway...', 'warning');
-            window.open('https://claude.ai/new', '_blank');
-        }
+
+        // Open Claude.ai with prompt in URL query parameter
+        const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
+        window.open(claudeUrl, '_blank');
+
+        showNotification('✓ Opening Claude with your prompt...', 'success');
+
+        // Clear textarea
+        claudeTextarea.value = '';
+        claudeBtn.disabled = true;
     });
-    
+
     // Ask ChatGPT
     chatgptBtn.addEventListener('click', async () => {
         const prompt = chatgptTextarea.value.trim();
         if (!prompt) return;
-        
-        try {
-            // Copy to clipboard
-            await navigator.clipboard.writeText(prompt);
-            
-            // Open ChatGPT in new tab
-            window.open('https://chat.openai.com/', '_blank');
-            
-            // Show success notification
-            showNotification('✓ Copied to clipboard! Opening ChatGPT...', 'success');
-            
-            // Clear textarea
-            chatgptTextarea.value = '';
-            chatgptBtn.disabled = true;
-            
-        } catch (error) {
-            console.error('Failed to copy:', error);
-            showNotification('⚠ Failed to copy. Opening ChatGPT anyway...', 'warning');
-            window.open('https://chat.openai.com/', '_blank');
-        }
+
+        // Open ChatGPT with prompt in URL query parameter
+        const chatgptUrl = `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`;
+        window.open(chatgptUrl, '_blank');
+
+        showNotification('✓ Opening ChatGPT with your prompt...', 'success');
+
+        // Clear textarea
+        chatgptTextarea.value = '';
+        chatgptBtn.disabled = true;
     });
     
     // Allow Enter to submit (Shift+Enter for new line)
@@ -512,6 +562,154 @@ function showNotification(message, type = 'info') {
 }
 
 // ============================================
+// WEATHER WIDGET
+// ============================================
+const WEATHER_CODES = {
+    0: { desc: 'Clear sky', icon: 'fa-sun' },
+    1: { desc: 'Mainly clear', icon: 'fa-sun' },
+    2: { desc: 'Partly cloudy', icon: 'fa-cloud-sun' },
+    3: { desc: 'Overcast', icon: 'fa-cloud' },
+    45: { desc: 'Foggy', icon: 'fa-smog' },
+    48: { desc: 'Depositing rime fog', icon: 'fa-smog' },
+    51: { desc: 'Light drizzle', icon: 'fa-cloud-rain' },
+    53: { desc: 'Moderate drizzle', icon: 'fa-cloud-rain' },
+    55: { desc: 'Dense drizzle', icon: 'fa-cloud-showers-heavy' },
+    61: { desc: 'Slight rain', icon: 'fa-cloud-rain' },
+    63: { desc: 'Moderate rain', icon: 'fa-cloud-showers-heavy' },
+    65: { desc: 'Heavy rain', icon: 'fa-cloud-showers-heavy' },
+    71: { desc: 'Slight snow', icon: 'fa-snowflake' },
+    73: { desc: 'Moderate snow', icon: 'fa-snowflake' },
+    75: { desc: 'Heavy snow', icon: 'fa-snowflake' },
+    80: { desc: 'Slight rain showers', icon: 'fa-cloud-sun-rain' },
+    81: { desc: 'Moderate rain showers', icon: 'fa-cloud-showers-heavy' },
+    82: { desc: 'Violent rain showers', icon: 'fa-cloud-showers-heavy' },
+    95: { desc: 'Thunderstorm', icon: 'fa-cloud-bolt' },
+    96: { desc: 'Thunderstorm with hail', icon: 'fa-cloud-bolt' },
+    99: { desc: 'Thunderstorm with heavy hail', icon: 'fa-cloud-bolt' },
+};
+
+async function getLocation(forceRefresh = false) {
+    // Try cached location first
+    if (!forceRefresh) {
+        const cached = localStorage.getItem(CONFIG.STORAGE_KEYS.LOCATION);
+        if (cached) {
+            return JSON.parse(cached);
+        }
+    }
+
+    // Request fresh location
+    const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 10000
+        });
+    });
+
+    const coords = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+    };
+
+    // Cache for future use
+    localStorage.setItem(CONFIG.STORAGE_KEYS.LOCATION, JSON.stringify(coords));
+    return coords;
+}
+
+async function initWeather(forceRefresh = false) {
+    const content = document.getElementById('weatherContent');
+
+    try {
+        const { latitude, longitude } = await getLocation(forceRefresh);
+
+        const weatherRes = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code`
+        );
+        const weatherData = await weatherRes.json();
+        const current = weatherData.current;
+
+        const weatherInfo = WEATHER_CODES[current.weather_code] || { desc: 'Unknown', icon: 'fa-question' };
+
+        // Reverse geocode for city name
+        let cityName = `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+        try {
+            const reverseRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&zoom=10`);
+            const reverseData = await reverseRes.json();
+            cityName = reverseData.address?.city || reverseData.address?.town || reverseData.address?.village || reverseData.display_name?.split(',')[0] || cityName;
+        } catch {}
+
+        content.innerHTML = `
+            <div class="weather-main">
+                <div class="weather-temp">${Math.round(current.temperature_2m)}°</div>
+                <i class="fa-solid ${weatherInfo.icon} weather-icon"></i>
+            </div>
+            <div class="weather-desc">${weatherInfo.desc}</div>
+            <div class="weather-details">
+                <div class="weather-detail-item">
+                    <i class="fa-solid fa-droplet"></i>
+                    <span>${current.relative_humidity_2m}%</span>
+                </div>
+                <div class="weather-detail-item">
+                    <i class="fa-solid fa-wind"></i>
+                    <span>${current.wind_speed_10m} km/h</span>
+                </div>
+            </div>
+            <div class="weather-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>${cityName}</span>
+            </div>
+        `;
+
+    } catch (error) {
+        console.warn('Weather error:', error);
+        content.innerHTML = `
+            <div class="weather-error">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <p>Enable location access to see weather</p>
+            </div>
+        `;
+    }
+}
+
+// ============================================
+// QUICK ACTIONS
+// ============================================
+function initQuickActions() {
+    // Refresh background
+    document.getElementById('refreshBgBtn').addEventListener('click', () => {
+        loadBackground();
+        showNotification('✓ Loading new background...', 'success');
+    });
+
+    // Fullscreen toggle
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            fullscreenBtn.querySelector('i').className = 'fa-solid fa-compress';
+        } else {
+            document.exitFullscreen();
+            fullscreenBtn.querySelector('i').className = 'fa-solid fa-expand';
+        }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+        const icon = fullscreenBtn.querySelector('i');
+        icon.className = document.fullscreenElement ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+    });
+
+    // Refresh weather
+    document.getElementById('refreshWeatherBtn').addEventListener('click', () => {
+        document.getElementById('weatherContent').innerHTML = `
+            <div class="weather-loading">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>Loading weather...</span>
+            </div>
+        `;
+        initWeather(true);
+        showNotification('✓ Refreshing weather...', 'success');
+    });
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 function init() {
@@ -543,6 +741,12 @@ function init() {
     
     // Initialize AI widgets
     initAIWidgets();
+
+    // Initialize quick actions
+    initQuickActions();
+
+    // Initialize weather
+    initWeather();
 }
 
 // ============================================

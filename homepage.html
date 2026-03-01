@@ -21,10 +21,6 @@
     <!-- Background Image -->
     <div class="bg-image" id="bgImage"></div>
 
-    <!-- Settings Button -->
-    <button class="settings-btn glass-effect" id="settingsBtn" aria-label="Open settings">
-        <i class="fa-solid fa-gear"></i>
-    </button>
 
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -62,6 +58,20 @@
                     <i class="fa-solid fa-paper-plane"></i>
                     <span class="send-text">Ask ChatGPT</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget glass-effect weather-widget">
+            <div class="widget-header">
+                <i class="fa-solid fa-cloud-sun weather-icon-header"></i>
+                <div class="widget-title">Weather</div>
+            </div>
+            <div class="weather-content" id="weatherContent">
+                <div class="weather-loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Loading weather...</span>
+                </div>
             </div>
         </div>
     </aside>
@@ -135,6 +145,22 @@
         </div>
     </main>
 
+    <!-- Quick Actions (fixed, right side) -->
+    <div class="quick-actions">
+        <button class="quick-action-btn glass-effect" id="refreshBgBtn" aria-label="New background">
+            <i class="fa-solid fa-image"></i>
+        </button>
+        <button class="quick-action-btn glass-effect" id="fullscreenBtn" aria-label="Fullscreen">
+            <i class="fa-solid fa-expand"></i>
+        </button>
+        <button class="quick-action-btn glass-effect" id="refreshWeatherBtn" aria-label="Refresh weather">
+            <i class="fa-solid fa-rotate"></i>
+        </button>
+        <button class="quick-action-btn glass-effect" id="settingsBtn" aria-label="Open settings">
+            <i class="fa-solid fa-gear"></i>
+        </button>
+    </div>
+
     <!-- Context Menu -->
     <div class="context-menu" id="appContextMenu">
         <button id="editApp">✏️ Edit</button>
@@ -162,6 +188,30 @@
                     <span id="spotlightValue">150px</span>
                 </div>
                 <input type="range" id="spotlightSlider" min="50" max="300" value="150" step="10">
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-item-header">
+                    <label>Widget Width</label>
+                    <span id="widgetWidthValue">400px</span>
+                </div>
+                <input type="range" id="widgetWidthSlider" min="300" max="600" value="400" step="10">
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-item-header">
+                    <label>Widget Height</label>
+                    <span id="widgetHeightValue">Auto</span>
+                </div>
+                <input type="range" id="widgetHeightSlider" min="0" max="500" value="0" step="10">
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-item-header">
+                    <label>Icon Size</label>
+                    <span id="iconSizeValue">110px</span>
+                </div>
+                <input type="range" id="iconSizeSlider" min="70" max="180" value="110" step="10">
             </div>
         </div>
     </div>
